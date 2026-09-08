@@ -16,7 +16,7 @@ import { AGENTS } from "./data/agents.js";
 import { ARCHETYPES } from "./data/archetypes.js";
 import { PROVIDERS, type ConfigV1, type InstallRecord, type Provider, type Scope } from "./types.js";
 
-const PACKAGE_VERSION = "0.1.2";
+const PACKAGE_VERSION = "0.1.3";
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const templateRoot = join(packageRoot, "templates");
 const ledgerName = ".design-orchestra-install.json";
@@ -279,7 +279,7 @@ async function validate(root: string, target?: string): Promise<number> {
   else {
     const skills = await listFiles(skillsRoot);
     const markdown = skills.filter((file) => basename(file) === "SKILL.md");
-    if (markdown.length !== 6) errors.push("Expected exactly six SKILL.md files.");
+    if (markdown.length !== 7) errors.push("Expected exactly seven SKILL.md files.");
     for (const file of markdown) {
       const content = await readFile(file, "utf8");
       const normalized = content.replace(/\r\n/g, "\n");
@@ -288,7 +288,7 @@ async function validate(root: string, target?: string): Promise<number> {
       if (!/description: .+/.test(normalized)) errors.push("Missing skill description: " + relative(root, file));
     }
   }
-  if (AGENTS.length !== 5) errors.push("Expected five provider-neutral agents.");
+  if (AGENTS.length !== 6) errors.push("Expected six provider-neutral agents.");
   if (ARCHETYPES.length < 24) errors.push("Expected at least 24 archetypes.");
   for (const archetype of ARCHETYPES) if (Object.values(archetype.fingerprint).some((axis) => axis < 0 || axis > 5)) errors.push("Invalid fingerprint: " + archetype.id);
   for (const kind of ["codex", "claude", "gemini"] as const) {

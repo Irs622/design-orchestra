@@ -10,6 +10,7 @@ import {
   compatible,
 } from "../core.js";
 import { ARCHETYPES } from "../data/archetypes.js";
+import { AGENTS } from "../data/agents.js";
 import type { BriefV1 } from "../types.js";
 
 const brief: BriefV1 = {
@@ -124,4 +125,16 @@ test("gallery is self-contained and preserves selection gate", () => {
   assert.match(html, /Direction 03/);
   assert.match(html, /Select this direction in chat/);
   assert.doesNotMatch(html, /AI\s*99%|live status|cinematic showcase|blur\(/i);
+});
+
+test("AGENTS registry includes ux-guardian with strict UX and anti-slop rules", () => {
+  assert.equal(AGENTS.length, 6);
+  const guardian = AGENTS.find((agent) => agent.name === "ux-guardian");
+  assert.ok(guardian);
+  assert.equal(guardian.sandbox, "read-only");
+  assert.match(guardian.instructions, /layout-paradigms/);
+  assert.match(guardian.instructions, /Prohibit heavy, unmotivated background gradients/);
+  assert.match(guardian.instructions, /Prohibit floating badges/);
+  assert.match(guardian.instructions, /Prohibit handwritten inline SVG/);
+  assert.match(guardian.instructions, /Remove Effects Test/);
 });

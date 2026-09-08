@@ -53,8 +53,12 @@ notes. A cryptographically random seed is used when one is not supplied.
 
 ## What gets installed
 
-- Portable skills: `.agents/skills/design-orchestra` and five focused skills.
-- Provider agents: `.codex/agents/*.toml`, `.claude/agents/*.md`,
+- Portable skills: `.agents/skills/design-orchestra` and six focused skills
+  (`landing-strategy`, `visual-direction`, `layout-paradigms`,
+  `react-design-engineering`, `image-art-direction`, and `design-review`).
+- Provider agents: six specialist profiles (`creative-director`, `ux-strategist`,
+  `visual-explorer`, `design-engineer`, `design-critic`, and `ux-guardian`)
+  distributed to `.codex/agents/*.toml`, `.claude/agents/*.md`,
   `.cursor/agents/*.md`, `.gemini/agents/*.md`, or
   `.github/agents/*.agent.md`.
 - Native distributable artifacts under `.design-orchestra/plugins/` for
@@ -69,7 +73,10 @@ directory.
 
 - A structured question round happens before concept generation.
 - A landing-page implementation is never edited before an explicit selection.
-- Directions must pass a seven-dimension diversity check.
+- Directions must pass a seven-dimension diversity check and adopt distinct
+  structural grammars from the 8 layout paradigms.
+- Strict anti-slop governance bans unmotivated gradients, floating fake badges,
+  blanket glassmorphism, and raw inline SVGs.
 - Existing `DESIGN.md`, brand assets, and component systems are authoritative
   in redesigns.
 - Proof is never invented. Image assets need provenance and useful alt text.

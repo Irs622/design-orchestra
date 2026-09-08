@@ -45,6 +45,9 @@ landing-page recipe. Let the user select or describe:
 - **Design family:** functional, editorial, warm humanist, Swiss, bento,
   glass, soft-dimensional, maximalist collage, neo-brutalist, luxury,
   cinematic, or another brief-appropriate archetype.
+- **Layout paradigm:** Asymmetrical split, editorial masthead, dynamic bento,
+  monumental typographic rhythm, live terminal/sandbox, chaptered narrative,
+  utility control deck, or bifurcated comparative canvas (from layout-paradigms skill).
 - **Content sections:** hero, proof, feature explanation, product demo,
   process, comparison, pricing, FAQ, testimonials only when genuine, contact,
   newsletter, or an intentionally smaller sequence.
