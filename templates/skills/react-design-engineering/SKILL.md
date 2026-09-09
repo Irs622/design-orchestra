@@ -34,8 +34,9 @@ long content, 200% zoom, and the selected navigation behavior before polish.
 Ask the user which animation technology to use before implementation: CSS-only,
 Framer Motion, GSAP, 3D, or no motion. CSS is preferred for simple transitions.
 Use Framer Motion, GSAP, or 3D only when chosen and already installed, or after
-the user approves adding it. Provide a prefers-reduced-motion fallback; never
-make animation essential to comprehension or interaction.
+the user approves adding it. Follow [animation and 3D craft](references/animation-and-3d-craft.md)
+for GPU performance, camera constraints, bundle splitting, and prefers-reduced-motion
+compliance; never make animation essential to comprehension or interaction.
 
 Use exactly one icon library per page. Lucide React or React Icons are allowed.
 Ban handwritten SVG markup and standalone SVG icon files.

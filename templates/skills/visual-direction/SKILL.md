@@ -18,10 +18,13 @@ different composition, density, geometry, typography, color, imagery, and
 motion fingerprint. Minor palette or font variants are not distinct
 directions. Select archetypes for the brief, not because they are fashionable.
 
-Give each direction its own information architecture and navigation treatment.
-For example, an editorial direction may use a masthead and chapter-like
-anchors; a product direction may use a compact utility bar; a portfolio can
-use a deliberately sparse or no-persistent-navigation approach. Do not repeat
+Give each direction its own information architecture, layout paradigm, and navigation treatment.
+Select a distinct paradigm from the `layout-paradigms` skill for each direction
+(e.g., Asymmetrical Split, Editorial Masthead, Dynamic Bento, Monumental Typographic Rhythm,
+Live Terminal, Chaptered Narrative, Utility Deck, or Comparative Canvas) so candidates never
+converge on the same hero-plus-cards recipe. For example, an editorial direction may use
+a masthead and chapter-like anchors; a product direction may use a compact utility bar; a portfolio
+can use a deliberately sparse or no-persistent-navigation approach. Do not repeat
 the same centered-logo, links, and pill CTA navigation across all concepts.
 Only include the sections the user requested or that the strategy can justify.
 

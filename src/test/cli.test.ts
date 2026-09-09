@@ -16,6 +16,9 @@ test("CLI installs all provider profiles, protects edits, creates concepts, and 
     await invoke(["init", "--provider", "codex,claude,cursor,gemini,copilot", "--yes"]);
     const config = JSON.parse(await readFile(join(project, "design-orchestra.config.json"), "utf8"));
     assert.deepEqual(config.providers, ["codex", "claude", "cursor", "gemini", "copilot"]);
+    assert.ok(await readFile(join(project, ".codex", "agents", "ux-guardian.toml"), "utf8"));
+    assert.ok(await readFile(join(project, ".github", "agents", "ux-guardian.agent.md"), "utf8"));
+    assert.ok(await readFile(join(project, ".agents", "skills", "layout-paradigms", "SKILL.md"), "utf8"));
     await appendFile(join(project, ".codex", "agents", "creative-director.toml"), "\nuser modification\n");
     await assert.rejects(invoke(["update", "--provider", "codex", "--yes"]), (error: { code?: number }) => error.code === 2);
 
