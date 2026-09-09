@@ -42,3 +42,8 @@ test("CLI installs all provider profiles, protects edits, creates concepts, and 
     await rm(project, { recursive: true, force: true });
   }
 });
+
+test("CLI --version prints the version and exits cleanly", async () => {
+  const { stdout } = await run(process.execPath, [cli, "--version"]);
+  assert.match(stdout.trim(), /^\d+\.\d+\.\d+$/);
+});

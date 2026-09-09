@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   contrastRatio,
   createDirections,
+  relativeLuminance,
   renderMoodboardHtml,
   styleDistance,
   validateAssetLedger,
@@ -137,4 +138,42 @@ test("AGENTS registry includes ux-guardian with strict UX and anti-slop rules", 
   assert.match(guardian.instructions, /Prohibit floating badges/);
   assert.match(guardian.instructions, /Prohibit handwritten inline SVG/);
   assert.match(guardian.instructions, /Remove Effects Test/);
+});
+
+test("section numbering formats correctly beyond 9 sections", () => {
+  const directions = createDirections({
+    ...brief,
+    sections: Array.from({ length: 12 }, (_, i) => `Section ${i + 1}`),
+  }, "many-sections");
+  const html = renderMoodboardHtml(brief, directions);
+  assert.match(html, /<b>01<\/b>/);
+  assert.match(html, /<b>09<\/b>/);
+  assert.match(html, /<b>10<\/b>/);
+  assert.match(html, /<b>12<\/b>/);
+  assert.doesNotMatch(html, /<b>010<\/b>/);
+});
+
+test("validateBrief rejects non-array constraints", () => {
+  assert.equal(validateBrief({ ...brief, constraints: "not-an-array" as any }).valid, false);
+  assert.equal(validateBrief({ ...brief, constraints: [] }).valid, true);
+});
+
+test("validateBrief reports missing mode as required", () => {
+  const result = validateBrief({ ...brief, mode: undefined as any });
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some((err) => err.includes("required")));
+});
+
+test("relativeLuminance handles 3-digit and 8-digit hex codes", () => {
+  // 3-digit shorthand: #FFF === #FFFFFF
+  assert.equal(relativeLuminance("#FFF"), relativeLuminance("#FFFFFF"));
+  assert.equal(relativeLuminance("#000"), relativeLuminance("#000000"));
+  // 8-digit with alpha channel: alpha is stripped
+  assert.equal(relativeLuminance("#FFFFFFFF"), relativeLuminance("#FFFFFF"));
+  assert.equal(relativeLuminance("#00000080"), relativeLuminance("#000000"));
+});
+
+test("contrastRatio works with 3-digit hex shorthand", () => {
+  assert.equal(contrastRatio("#000", "#FFF"), 21);
+  assert.ok(contrastRatio("#000", "#FFF") === contrastRatio("#000000", "#FFFFFF"));
 });

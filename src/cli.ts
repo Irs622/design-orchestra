@@ -42,11 +42,12 @@ interface ManagedFile {
 const help = () => {
   console.log("Design Orchestra v" + PACKAGE_VERSION);
   console.log("Usage: design-orchestra <init|update|doctor|validate|uninstall|concepts> [options]");
-  console.log("Options: --provider codex,claude,cursor,gemini,copilot --scope project|global --dry-run --yes --force");
+  console.log("Options: --provider codex,claude,cursor,gemini,copilot --scope project|global --dry-run --yes --force --version");
 };
 
 function parseArgs(argv: string[]): { command: string; options: CliOptions } {
-  const [command = "help", ...rest] = argv;
+  const [rawCommand = "help", ...rest] = argv;
+  const command = rawCommand === "--help" || rawCommand === "-h" ? "help" : rawCommand === "--version" || rawCommand === "-v" ? "version" : rawCommand;
   const options: CliOptions = { scope: "project", dryRun: false, force: false, yes: false };
   for (let index = 0; index < rest.length; index += 1) {
     const arg = rest[index];
@@ -74,6 +75,7 @@ function parseArgs(argv: string[]): { command: string; options: CliOptions } {
     else if (arg === "--package-root") options.packageRoot = value();
     else if (arg === "--target") options.target = value();
     else if (arg === "--help" || arg === "-h") return { command: "help", options };
+    else if (arg === "--version" || arg === "-v") return { command: "version", options };
     else throw new Error("Unknown option: " + arg);
   }
   return { command, options };
@@ -376,6 +378,7 @@ async function main(): Promise<void> {
     const cwd = process.cwd();
     let code = 0;
     if (command === "help") help();
+    else if (command === "version") console.log(PACKAGE_VERSION);
     else if (command === "init") code = await init(cwd, options);
     else if (command === "update") code = await init(cwd, options, true);
     else if (command === "doctor") code = await doctor(cwd, options);

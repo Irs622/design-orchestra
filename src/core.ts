@@ -11,14 +11,18 @@ import type {
 import { ARCHETYPES } from "./data/archetypes.js";
 
 export { ARCHETYPES } from "./data/archetypes.js";
+export { DESIGN_FOUNDATIONS } from "./data/knowledge.js";
 export type {
+  AssetLedgerEntry,
   AssetLedgerV1,
   BriefV1,
   ConfigV1,
   DesignArchetype,
   DirectionV1,
+  InstallRecord,
   SelectionV1,
   StyleFingerprint,
+  ValidationResult,
 } from "./types.js";
 
 export const DEFAULT_CONFIG: ConfigV1 = {
@@ -217,7 +221,7 @@ export function renderMoodboardHtml(brief: BriefV1, directions: DirectionV1[]): 
   if (directions.length !== 3) throw new Error("A Design Orchestra concept round must contain exactly three directions.");
   const cards = directions.map((direction, index) => {
     const palette = direction.tokens.palette.map((color) => `<span class="swatch" style="--swatch:${escapeHtml(color)}">${escapeHtml(color)}</span>`).join("");
-    const sections = direction.conversionStructure.map((item, itemIndex) => `<li><b>0${itemIndex + 1}</b> ${escapeHtml(item)}</li>`).join("");
+    const sections = direction.conversionStructure.map((item, itemIndex) => `<li><b>${String(itemIndex + 1).padStart(2, "0")}</b> ${escapeHtml(item)}</li>`).join("");
     const ink = direction.tokens.palette[0] ?? "#171719";
     const paper = direction.tokens.palette[1] ?? "#ffffff";
     const accent = direction.tokens.palette[2] ?? ink;
@@ -256,7 +260,9 @@ export function renderMoodboardHtml(brief: BriefV1, directions: DirectionV1[]): 
 }
 
 export function relativeLuminance(hex: string): number {
-  const normalized = hex.replace("#", "");
+  let normalized = hex.replace("#", "");
+  if (/^[0-9a-fA-F]{3}$/.test(normalized)) normalized = normalized[0]! + normalized[0]! + normalized[1]! + normalized[1]! + normalized[2]! + normalized[2]!;
+  if (/^[0-9a-fA-F]{8}$/.test(normalized)) normalized = normalized.slice(0, 6);
   if (!/^[0-9a-fA-F]{6}$/.test(normalized)) throw new Error(`Invalid color: ${hex}`);
   const channels = [0, 2, 4].map((offset) => Number.parseInt(normalized.slice(offset, offset + 2), 16) / 255);
   const linear = channels.map((channel) => channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
@@ -287,11 +293,13 @@ export function validateBrief(value: unknown): ValidationResult {
     errors.push(`Brief.animationTechnology must be one of: ${validAnimation.join(", ")}.`);
   }
   if (!Array.isArray(brief.proof)) errors.push("Brief.proof must be an array; use an empty array when proof is unavailable.");
+  if (brief.constraints !== undefined && !Array.isArray(brief.constraints)) errors.push("Brief.constraints must be an array.");
   if (brief.colorPalette && (!Array.isArray(brief.colorPalette.colors) || brief.colorPalette.colors.length < 2 || brief.colorPalette.colors.some((color) => !/^#[0-9a-f]{6}$/i.test(color)))) {
     errors.push("Brief.colorPalette must contain at least two six-digit hex colors.");
   }
   if (brief.version !== 1) errors.push("Brief.version must be 1.");
-  if (brief.mode !== "create" && brief.mode !== "redesign") errors.push("Brief.mode must be create or redesign.");
+  if (brief.mode === undefined) errors.push("Brief.mode is required.");
+  else if (brief.mode !== "create" && brief.mode !== "redesign") errors.push("Brief.mode must be create or redesign.");
   return { valid: errors.length === 0, errors, warnings: [] };
 }
 
