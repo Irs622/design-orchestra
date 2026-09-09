@@ -73,11 +73,9 @@ export function HeroCard({ children }: { children: React.ReactNode }) {
 ```
 
 ### GSAP pattern
-```ts
 import gsap from "gsap";
 
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
+const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 if (!prefersReducedMotion) {
   gsap.from(".feature-node", { y: 20, opacity: 0, stagger: 0.08, duration: 0.4 });
 } else {
